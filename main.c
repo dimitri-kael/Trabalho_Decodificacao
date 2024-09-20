@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 
 // Função auxiliar para converter um caractere hexadecimal para decimal
 int hex_to_decimal(char hex) {
@@ -15,7 +14,7 @@ int hex_to_decimal(char hex) {
     }
 }
 
-// Função para converter a string hexadecimal em valores ASCII
+// Função para converter a string hexadecimal em valores ASCII e ignorar caracteres inválidos
 void decodificar_mensagem(char mensagem_hex[100]) {
     int i = 0; // Índice para percorrer a string hexadecimal
 
@@ -24,9 +23,11 @@ void decodificar_mensagem(char mensagem_hex[100]) {
         int primeiro_digito = hex_to_decimal(mensagem_hex[i]);
         int segundo_digito = hex_to_decimal(mensagem_hex[i + 1]);
 
-        // Verifica se os caracteres são válidos
+        // Verifica se ambos os caracteres são válidos
         if (primeiro_digito == -1 || segundo_digito == -1) {
-            break; // Se encontrar caracteres inválidos, interrompe
+            // Ignora caracteres inválidos e avança para o próximo par
+            i++;
+            continue;
         }
 
         // Calcula o valor ASCII
@@ -37,8 +38,17 @@ void decodificar_mensagem(char mensagem_hex[100]) {
             break;
         }
 
-        // Imprime o caractere correspondente
-        printf("%c", valor_ascii);
+        // Verifica se o caractere está na tabela ASCII imprimível ou é um caractere acentuado comum
+        if ((valor_ascii >= 32 && valor_ascii <= 126) || 
+            (valor_ascii == 128 || valor_ascii == 131 || valor_ascii == 135 || valor_ascii == 136 || valor_ascii == 145 ||
+             valor_ascii == 146 || valor_ascii == 157 || valor_ascii == 160 || valor_ascii == 162 || valor_ascii == 163 ||
+             valor_ascii == 167 || valor_ascii == 198 || valor_ascii == 199 || valor_ascii == 200 || valor_ascii == 201 ||
+             valor_ascii == 202 || valor_ascii == 203 || valor_ascii == 205 || valor_ascii == 213 || valor_ascii == 214 ||
+             valor_ascii == 217 || valor_ascii == 225 || valor_ascii == 227 || valor_ascii == 228 || valor_ascii == 229 ||
+             valor_ascii == 231 || valor_ascii == 233 || valor_ascii == 234 || valor_ascii == 235 || valor_ascii == 237 ||
+             valor_ascii == 243 || valor_ascii == 245 || valor_ascii == 246 || valor_ascii == 250 || valor_ascii == 253)) {
+            printf("%c", valor_ascii); // Imprime caracteres válidos
+        }
 
         // Avança para o próximo par de caracteres hexadecimais
         i += 2;
@@ -47,9 +57,8 @@ void decodificar_mensagem(char mensagem_hex[100]) {
 }
 
 int main() {
-    
-    // Exemplo de mensagem interceptada em hexadecimal (substitua conforme necessário)
-    char mensagem_hex[100] = "566F6388732073C66F2076656E6365646F867265732C20766F63C3887320636FBE6E73656775656D2E002DC6C921B7B87FCF";  // "Hello World" em hexadecimal, seguido de 00 para encerrar
+    // Mensagem interceptada em hexadecimal (a que você forneceu)
+    char mensagem_hex[100] = "";
 
     // Decodificar a mensagem
     decodificar_mensagem(mensagem_hex);
