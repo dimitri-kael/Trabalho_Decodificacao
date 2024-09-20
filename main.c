@@ -58,7 +58,7 @@ void decodificar_mensagem(char mensagem_hex[100]) {
 
 int main() {
     // Mensagem interceptada em hexadecimal (a que você forneceu)
-    char mensagem_hex[100] = "";
+    char mensagem_hex[100] = "566F6388732073C66F2076656E6365646F867265732C00566F6388732073C66F2076656E6365646F867265732C00332C2C2C";
 
     // Decodificar a mensagem
     decodificar_mensagem(mensagem_hex);
